@@ -24,7 +24,6 @@ public class ProductosController(IMediator mediator) : ControllerBase
         return Ok(productos.Select(producto => producto.ToResponse()));
     }
 
-    [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductoResponse>> GetById(int id, CancellationToken cancellationToken)
     {
@@ -113,6 +112,8 @@ public class ProductosController(IMediator mediator) : ControllerBase
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+[ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductoResponse>> Delete(int id, CancellationToken cancellationToken)
     {
         var deleted = await mediator.Send(new DeleteProductoCommand(id), cancellationToken);

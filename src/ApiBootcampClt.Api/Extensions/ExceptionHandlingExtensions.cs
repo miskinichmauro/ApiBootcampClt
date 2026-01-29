@@ -23,15 +23,19 @@ public static class ExceptionHandlingExtensions
 
                 logger.LogError(exception, "Unhandled exception");
 
-                context.Response.StatusCode =
-                    StatusCodes.Status500InternalServerError;
-
                 context.Response.ContentType = "application/json";
 
-                var error = new ErrorResponse(
-                    StatusCodes.Status500InternalServerError,
-                    "Ocurrió un error inesperado al procesar la solicitud"
-                );
+                var statusCode = exception is InvalidOperationException
+                    ? StatusCodes.Status400BadRequest
+                    : StatusCodes.Status500InternalServerError;
+
+                var message = exception is InvalidOperationException
+                    ? exception.Message
+                    : "Ocurrió un error inesperado al procesar la solicitud";
+
+                context.Response.StatusCode = statusCode;
+
+                var error = new ErrorResponse(statusCode, message);
 
                 await context.Response.WriteAsJsonAsync(error);
             });

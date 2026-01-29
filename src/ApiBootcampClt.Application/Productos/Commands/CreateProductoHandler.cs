@@ -18,7 +18,10 @@ public sealed class CreateProductoHandler(
         logger.LogInformation("Creando un nuevo producto");
 
         if (!await categoriasRepository.ExistsAsync(request.CategoriaId, cancellationToken))
+        {
+            logger.LogWarning($"Categoria con id {CategoriaId} no encontrada", request.CategoriaId);
             return null;
+        }
 
         if (await productosRepository.ExistsByCodigoAsync(request.Codigo, cancellationToken))
         {
