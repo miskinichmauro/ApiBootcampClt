@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-env
+data:
+  ASPNETCORE_ENVIRONMENT: "{{ .Values.app.env.aspnetcoreEnvironment }}"
+  ASPNETCORE_URLS: "http://+:{{ .Values.app.containerPort }}"
+  ApplicationName: "{{ .Values.app.applicationName }}"
+
+  Serilog__WriteTo__1__Args__configure__0__Args__serverUrl: "{{ .Values.serilog.seq.serverUrl }}"
