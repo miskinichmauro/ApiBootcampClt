@@ -19,7 +19,7 @@ public sealed class CreateProductoHandler(
 
         if (!await categoriasRepository.ExistsAsync(request.CategoriaId, cancellationToken))
         {
-            logger.LogWarning($"Categoria con id {CategoriaId} no encontrada", request.CategoriaId);
+            logger.LogWarning("Categoria con id {CategoriaId} no encontrada", request.CategoriaId);
             return null;
         }
 
