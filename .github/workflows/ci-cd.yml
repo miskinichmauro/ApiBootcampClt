@@ -39,8 +39,8 @@ jobs:
 
       - name: Build and Push image
         run: |
-          docker build -t miskinich/ApiBootcampClt-api:${{ steps.meta.outputs.tag }} .
-          docker push miskinich/ApiBootcampClt-api:${{ steps.meta.outputs.tag }}
+          docker build -t miskinich/api-bootcampclt:${{ steps.meta.outputs.tag }} .
+          docker push miskinich/api-bootcampclt:${{ steps.meta.outputs.tag }}
 
   cd:
     needs: ci
