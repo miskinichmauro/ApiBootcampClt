@@ -1,5 +1,6 @@
 using ApiBootcampClt.Application.Productos.Dtos;
 using ApiBootcampClt.Application.Productos.Interfaces;
+using ApiBootcampClt.Domain.Entities;
 using ApiBootcampClt.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,5 +48,46 @@ public class ProdcutosRepository(AppDbContext db) : IProductosRepository
                 p.CantidadStock
             ))
             .SingleOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<ProductoDto> CreateAsync(Producto producto, CancellationToken cancellationToken)
+    {
+        db.Productos.Add(producto);
+        await db.SaveChangesAsync(cancellationToken);
+        return (await GetByIdAsync(producto.Id, cancellationToken))!;
+    }
+
+    public async Task<ProductoDto?> UpdateAsync(Producto producto, CancellationToken cancellationToken)
+    {
+        var existing = await db.Productos
+            .SingleOrDefaultAsync(p => p.Id == producto.Id, cancellationToken);
+
+        if (existing is null)
+            return null;
+
+        existing.Codigo = producto.Codigo;
+        existing.Nombre = producto.Nombre;
+        existing.Descripcion = producto.Descripcion;
+        existing.Precio = producto.Precio;
+        existing.Activo = producto.Activo;
+        existing.CategoriaId = producto.CategoriaId;
+        existing.FechaActualizacion = producto.FechaActualizacion;
+        existing.CantidadStock = producto.CantidadStock;
+
+        await db.SaveChangesAsync(cancellationToken);
+        return await GetByIdAsync(existing.Id, cancellationToken);
+    }
+
+    public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
+    {
+        var existing = await db.Productos
+            .SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
+
+        if (existing is null)
+            return false;
+
+        db.Productos.Remove(existing);
+        await db.SaveChangesAsync(cancellationToken);
+        return true;
     }
 }

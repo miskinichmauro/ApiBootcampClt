@@ -5,8 +5,8 @@ using Microsoft.Extensions.Logging;
 
 namespace ApiBootcampClt.Application.Productos.Queries;
 
-public class GetAllProductosQueryHandler(
-    ILogger<GetAllProductosQueryHandler> logger,
+public class GetAllProductosHandler(
+    ILogger<GetAllProductosHandler> logger,
     IProductosRepository productosRepository
 ) : IRequestHandler<GetAllProductosQuery, IReadOnlyList<ProductoDto>>
 {
