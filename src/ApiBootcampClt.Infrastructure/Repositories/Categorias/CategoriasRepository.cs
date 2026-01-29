@@ -68,6 +68,6 @@ public sealed class CategoriasRepository(AppDbContext db) : ICategoriasRepositor
         return true;
     }
 
-    public Task<bool> ExistsAsync(int id, CancellationToken cancellationToken)
-        => db.Categorias.AnyAsync(c => c.Id == id, cancellationToken);
+    public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken)
+        => await db.Categorias.AnyAsync(c => c.Id == id, cancellationToken);
 }

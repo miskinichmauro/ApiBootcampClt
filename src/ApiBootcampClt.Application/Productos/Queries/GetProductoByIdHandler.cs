@@ -10,9 +10,15 @@ public sealed class GetProductoByIdHandler(
     IProductosRepository productosRepository
 ) : IRequestHandler<GetProductoByIdQuery, ProductoDto?>
 {
-    public Task<ProductoDto?> Handle(GetProductoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ProductoDto?> Handle(GetProductoByIdQuery request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Obteniendo el producto con id {IdProducto}", request.Id);
-        return productosRepository.GetByIdAsync(request.Id, cancellationToken);
+        logger.LogInformation("Obteniendo producto con id {ProductoId}", request.Id);
+        var producto = await productosRepository.GetByIdAsync(request.Id, cancellationToken);
+        
+        if (producto == null)
+        {
+            logger.LogWarning("Producto con id {ProductoId} no encontrado", request.Id);
+        }
+        return producto;
     }
 }

@@ -13,6 +13,8 @@ public class GetAllProductosHandler(
     public async Task<IReadOnlyList<ProductoDto>> Handle(GetAllProductosQuery request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Obteniendo todos los productos");
-        return await productosRepository.GetAllAsync(cancellationToken);
+        var productos = await productosRepository.GetAllAsync(cancellationToken);
+        logger.LogInformation("{Cantidad} productos obtenidos", productos.Count);
+        return productos;
     }
 }

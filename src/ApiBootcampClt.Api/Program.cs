@@ -24,6 +24,7 @@ builder.Host.UseSerilog((ctx, services, lc) =>
 var app = builder.Build();
 
 app.UseExceptionHandling();
+app.UseRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {

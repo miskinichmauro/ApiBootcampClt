@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiBootcampClt.Infrastructure.Repositories.Productos;
 
-public class ProdcutosRepository(AppDbContext db) : IProductosRepository
+public class ProductosRepository(AppDbContext db) : IProductosRepository
 {
     public async Task<IReadOnlyList<ProductoDto>> GetAllAsync(CancellationToken cancellationToken)
         => await db.Productos

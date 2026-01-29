@@ -10,9 +10,9 @@ public sealed class GetCategoriaByIdHandler(
     ICategoriasRepository categoriasRepository
 ) : IRequestHandler<GetCategoriaByIdQuery, CategoriaDto?>
 {
-    public Task<CategoriaDto?> Handle(GetCategoriaByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CategoriaDto?> Handle(GetCategoriaByIdQuery request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Obteniendo la categoria con id {IdCategoria}", request.Id);
-        return categoriasRepository.GetByIdAsync(request.Id, cancellationToken);
+        return await categoriasRepository.GetByIdAsync(request.Id, cancellationToken);
     }
 }
