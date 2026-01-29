@@ -50,6 +50,20 @@ public class ProductosRepository(AppDbContext db) : IProductosRepository
             .SingleOrDefaultAsync(cancellationToken);
     }
 
+    public async Task<bool> ExistsByCodigoAsync(string codigo, CancellationToken cancellationToken)
+    {
+        return await db.Productos
+            .AsNoTracking()
+            .AnyAsync(p => p.Codigo == codigo, cancellationToken);
+    }
+
+    public async Task<bool> ExistsByCodigoAsync(string codigo, int excludeId, CancellationToken cancellationToken)
+    {
+        return await db.Productos
+            .AsNoTracking()
+            .AnyAsync(p => p.Codigo == codigo && p.Id != excludeId, cancellationToken);
+    }
+
     public async Task<ProductoDto> CreateAsync(Producto producto, CancellationToken cancellationToken)
     {
         db.Productos.Add(producto);

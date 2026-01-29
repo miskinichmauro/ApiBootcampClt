@@ -20,6 +20,12 @@ public sealed class CreateProductoHandler(
         if (!await categoriasRepository.ExistsAsync(request.CategoriaId, cancellationToken))
             return null;
 
+        if (await productosRepository.ExistsByCodigoAsync(request.Codigo, cancellationToken))
+        {
+            logger.LogWarning("Producto con codigo {ProductoCodigo} ya existe", request.Codigo);
+            throw new InvalidOperationException($"Producto con código {request.Codigo} ya existe");
+        }
+
         var producto = new Producto
         {
             Codigo = request.Codigo,

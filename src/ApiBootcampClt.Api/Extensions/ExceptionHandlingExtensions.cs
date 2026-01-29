@@ -1,5 +1,5 @@
+using ApiBootcampClt.Api.Contracts.Common;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ApiBootcampClt.Api.Extensions;
 
@@ -26,18 +26,14 @@ public static class ExceptionHandlingExtensions
                 context.Response.StatusCode =
                     StatusCodes.Status500InternalServerError;
 
-                context.Response.ContentType =
-                    "application/problem+json";
+                context.Response.ContentType = "application/json";
 
-                var problem = new ProblemDetails
-                {
-                    Status = StatusCodes.Status500InternalServerError,
-                    Title = "Error inesperado",
-                    Detail = "OcurriÃ³ un error inesperado al procesar la solicitud",
-                    Instance = context.Request.Path
-                };
+                var error = new ErrorResponse(
+                    StatusCodes.Status500InternalServerError,
+                    "Ocurrió un error inesperado al procesar la solicitud"
+                );
 
-                await context.Response.WriteAsJsonAsync(problem);
+                await context.Response.WriteAsJsonAsync(error);
             });
         });
 

@@ -20,6 +20,12 @@ public sealed class UpdateProductoHandler(
         if (!await categoriasRepository.ExistsAsync(request.CategoriaId, cancellationToken))
             return null;
 
+        if (await productosRepository.ExistsByCodigoAsync(request.Codigo, request.Id, cancellationToken))
+        {
+            logger.LogWarning("Producto con codigo {ProductoCodigo} ya existe", request.Codigo);
+            throw new InvalidOperationException($"Producto con codigo {request.Codigo} ya existe");
+        }
+
         var producto = new Producto
         {
             Id = request.Id,
